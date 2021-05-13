@@ -1,5 +1,7 @@
 # spotify2everywhere
 
+![logo](https://raw.githubusercontent.com/Warkanlock/spotify2everywhere/main/spotify2everywhere/public/default.png)
+
 Send your playlists to your favorite places, as a JSON file (for now)
 
 ## Usage 
