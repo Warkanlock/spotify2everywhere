@@ -1,6 +1,7 @@
 import Head from "next/head";
 import { useState } from "react";
 import styles from "../styles/Home.module.css";
+import ErrorPage from "./error/error";
 
 function validURL(str) {
   var pattern = new RegExp(
@@ -26,11 +27,11 @@ export default function Home() {
 
     if (validURL(cleanId)) {
       const cleanUrl = new URL(cleanId);
-      console.log(cleanUrl)
-      if(cleanUrl.host === "open.spotify.com"){
+      console.log(cleanUrl);
+      if (cleanUrl.host === "open.spotify.com") {
         cleanId = cleanUrl.pathname.replace("/playlist/", "");
-      }else{
-        setError({error:true, message:"Use a real link, c'mon!"})
+      } else {
+        setError({ error: true, message: "Use a real link, c'mon!" });
       }
     }
     return fetch(`/api/spotify/${cleanId}`).then((res) => res.json());
@@ -46,7 +47,7 @@ export default function Home() {
       } else {
         setError({ error: false, message: "", status: 200 });
         setTracks(response.playlist.tracks);
-        setPlaylistDescription(response.playlist.description)
+        setPlaylistDescription(response.playlist.description);
       }
     }
   };
@@ -67,27 +68,7 @@ export default function Home() {
   };
 
   if (activeError.error) {
-    return (
-      <div className={styles.container}>
-        <Head>
-          <title>spotify2everywhere</title>
-          <link rel="icon" href="/favicon.ico" />
-        </Head>
-
-        <main className={styles.main}>
-          <h2>There was an error using this page: {activeError.message}</h2>
-          <div
-            onClick={() =>
-              setError({ error: false, message: "", status: null })
-            }
-          >
-            Go back
-          </div>
-        </main>
-
-        <footer className={styles.footer}>Made by Ignacio Brasca</footer>
-      </div>
-    );
+    return <ErrorPage message={activeError.message} onError={setError} />;
   }
 
   return (
@@ -109,11 +90,10 @@ export default function Home() {
           />
           <div
             className={styles.centerItemBack}
-            onClick={() =>{
-              setError({ error: false, message: "", status: null })
-              setTracks(null)
-            }
-            }
+            onClick={() => {
+              setError({ error: false, message: "", status: null });
+              setTracks(null);
+            }}
           >
             Go back
           </div>
@@ -149,7 +129,12 @@ export default function Home() {
         </main>
       )}
 
-      <footer className={styles.footer}>Made with ❤️ by <a className={styles.linkFooter} href="https://github.com/Warkanlock">&nbsp;@Warkanlock</a></footer>
+      <footer className={styles.footer}>
+        Made with ❤️ by{" "}
+        <a className={styles.linkFooter} href="https://github.com/Warkanlock">
+          &nbsp;@Warkanlock
+        </a>
+      </footer>
     </div>
   );
 }
